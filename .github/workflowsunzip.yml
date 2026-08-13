@@ -1,0 +1,28 @@
+name: Unzip and Deploy
+
+on:
+  push:
+    paths:
+      - 'adx-shares.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Unzip file
+        run: |
+          unzip -o adx-shares.zip -d .
+          rm adx-shares.zip
+          ls -la
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Unzip adx-shares.zip and remove archive" || echo "No changes to commit"
+          git push
