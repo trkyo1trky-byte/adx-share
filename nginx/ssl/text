@@ -1,0 +1,39 @@
+
+---
+
+### 5. **`backend/Dockerfile.prod`** (جديد)
+**المسار:** `backend/Dockerfile.prod`
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# Create tables
+RUN python -c "
+from app.core.database import engine
+from app.models import user, role, market, crypto, trading
+user.Base.metadata.create_all(bind=engine)
+role.Base.metadata.create_all(bind=engine)
+market.Base.metadata.create_all(bind=engine)
+crypto.Base.metadata.create_all(bind=engine)
+trading.Base.metadata.create_all(bind=engine)
+"
+
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

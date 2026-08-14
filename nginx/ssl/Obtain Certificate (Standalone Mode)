@@ -1,0 +1,1 @@
+sudo certbot certonly --standalone -d adx-shares.com -d www.adx-shares.com -d api.adx-shares.com

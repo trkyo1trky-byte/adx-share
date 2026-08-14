@@ -1,0 +1,2 @@
+sudo crontab -e
+# Add: 0 0 * * * certbot renew --quiet --post-hook "docker-compose -f docker-compose.prod.yml restart nginx"

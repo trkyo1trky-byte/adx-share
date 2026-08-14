@@ -1,0 +1,4 @@
+sudo cp /etc/letsencrypt/live/adx-shares.com/fullchain.pem ./nginx/ssl/
+sudo cp /etc/letsencrypt/live/adx-shares.com/privkey.pem ./nginx/ssl/
+sudo chmod 644 ./nginx/ssl/fullchain.pem
+sudo chmod 600 ./nginx/ssl/privkey.pem
